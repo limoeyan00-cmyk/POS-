@@ -86,8 +86,8 @@ def build():
     print(f"Running PyInstaller with {len(args)} arguments...")
     PyInstaller.__main__.run(args)
     
-    print("\n✅ Build complete!")
-    print("   Standalone EXE → dist/KastomPOS.exe")
+    print("\nBUILD COMPLETE!")
+    print("   Standalone EXE -> dist/KastomPOS.exe")
     print("   Run the Inno Setup compiler on installer.iss to create the Setup wizard.")
 
 if __name__ == "__main__":
