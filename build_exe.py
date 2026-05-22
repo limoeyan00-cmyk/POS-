@@ -46,6 +46,8 @@ def build():
         '--windowed',
         # Uvicorn internals
         '--hidden-import=main',
+        '--hidden-import=models',
+        '--hidden-import=database',
         '--hidden-import=uvicorn.logging',
         '--hidden-import=uvicorn.loops',
         '--hidden-import=uvicorn.loops.auto',

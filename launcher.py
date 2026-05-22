@@ -1,13 +1,21 @@
 import sys
 import os
+
+# CRITICAL FIX: In PyInstaller --onefile/--windowed mode, the bundle extraction
+# directory (sys._MEIPASS) is NOT automatically on sys.path.
+# We must add it manually before importing ANY local modules (main, models, database).
+if getattr(sys, "frozen", False):
+    _bundle_dir = sys._MEIPASS
+    if _bundle_dir not in sys.path:
+        sys.path.insert(0, _bundle_dir)
+
 import threading
 import socket
 import time
 import logging
 import traceback
 
-# TOP-LEVEL import so PyInstaller's dependency tracer bundles main.py
-# Do NOT move this inside a function — PyInstaller won't see it there.
+# Top-level import so PyInstaller analysis traces and bundles main.py
 import main as app_module
 
 logging.basicConfig(level=logging.INFO)
@@ -27,7 +35,7 @@ def start_server():
     global _server_error
     try:
         import uvicorn
-        # Pass the app object directly — avoids 'no module named main' at runtime
+        # Use the already-imported app object — no runtime module lookup
         uvicorn.run(
             app_module.app,
             host="127.0.0.1",
@@ -60,7 +68,7 @@ def show_error_window(title: str, message: str):
       <pre style="background:#0d0d1a;padding:15px;border-radius:6px;font-size:12px;
                   color:#ff6b6b;overflow:auto;max-height:300px;white-space:pre-wrap">{message}</pre>
       <p style="color:#aaa;font-size:12px">
-        Send a screenshot of this error to support, then restart the application.
+        Screenshot this error and send to support, then restart the application.
       </p>
     </body>
     </html>
@@ -71,7 +79,7 @@ def show_error_window(title: str, message: str):
 
 def main():
     if is_port_in_use(8000):
-        log.info("Server already running on port 8000 — reusing it.")
+        log.info("Server already running on port 8000 - reusing it.")
     else:
         server_thread = threading.Thread(target=start_server, daemon=True)
         server_thread.start()
