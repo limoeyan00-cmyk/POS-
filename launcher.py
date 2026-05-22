@@ -4,9 +4,13 @@ import threading
 import socket
 import time
 import logging
+import traceback
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("kastompos")
+
+# Global to capture server startup error
+_server_error = None
 
 
 def is_port_in_use(port: int) -> bool:
@@ -15,73 +19,74 @@ def is_port_in_use(port: int) -> bool:
         return s.connect_ex(("127.0.0.1", port)) == 0
 
 
-def set_app_dir():
-    """
-    Point the working directory at the right place so templates/static
-    are found whether we are running frozen (PyInstaller) or from source.
-    """
-    if getattr(sys, "frozen", False):
-        # PyInstaller extracts everything to sys._MEIPASS at runtime
-        base = sys._MEIPASS
-    else:
-        base = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(base)
-
-
 def start_server():
-    """Run FastAPI/Uvicorn in a daemon thread (NOT a subprocess).
-    Using threads avoids the Windows multiprocessing re-spawn bug where
-    PyInstaller frozen exes re-execute __main__ instead of the target fn.
+    """Run FastAPI/Uvicorn in a daemon thread.
+    Any exception here is captured and shown to the user.
     """
-    import uvicorn
-    # Import app here so PyInstaller can trace all dependencies
-    import main  # noqa: F401  (side-effect: registers routes / models)
-    uvicorn.run(
-        "main:app",
-        host="127.0.0.1",
-        port=8000,
-        log_level="warning",  # keep console quiet in windowed mode
-    )
+    global _server_error
+    try:
+        import uvicorn
+        import main  # noqa: F401
+        uvicorn.run(
+            "main:app",
+            host="127.0.0.1",
+            port=8000,
+            log_level="info",
+        )
+    except Exception as e:
+        _server_error = traceback.format_exc()
+        log.error("Server failed to start:\n%s", _server_error)
 
 
 def wait_for_server(port: int, timeout: int = 30) -> bool:
-    """Block until the server accepts connections or timeout expires."""
+    """Block until the server accepts connections or the thread crashes."""
     deadline = time.time() + timeout
     while time.time() < deadline:
         if is_port_in_use(port):
             return True
+        if _server_error:
+            return False   # thread already crashed
         time.sleep(0.5)
     return False
 
 
+def show_error_window(title: str, message: str):
+    import webview
+    safe_msg = message.replace("\\", "\\\\").replace("`", "\\`").replace("'", "\\'")
+    html = f"""
+    <html>
+    <body style="font-family:sans-serif;background:#1a1a2e;color:#eee;padding:30px;margin:0">
+      <h2 style="color:#e74c3c">KastomPOS - Startup Error</h2>
+      <p style="color:#ccc">{title}</p>
+      <pre style="background:#0d0d1a;padding:15px;border-radius:6px;font-size:12px;
+                  color:#ff6b6b;overflow:auto;max-height:300px;white-space:pre-wrap">{message}</pre>
+      <p style="color:#aaa;font-size:12px">
+        Send a screenshot of this error to support.<br>
+        Then close this window and restart the application.
+      </p>
+    </body>
+    </html>
+    """
+    webview.create_window(title, html=html, width=720, height=500)
+    webview.start()
+
+
 def main():
-    set_app_dir()
+    # NOTE: Do NOT os.chdir() here — main.py already uses resource_path()
+    # to locate templates/static relative to sys._MEIPASS when frozen.
 
     if is_port_in_use(8000):
-        log.info("Server already running on port 8000 - reusing it.")
+        log.info("Server already running on port 8000 — reusing it.")
     else:
-        # Daemon thread: dies automatically when the main window closes
         server_thread = threading.Thread(target=start_server, daemon=True)
         server_thread.start()
 
         log.info("Waiting for server to start...")
-        if not wait_for_server(8000, timeout=30):
-            # Show a user-friendly error if the server never came up
-            import webview
-            webview.create_window(
-                "KastomPOS - Startup Error",
-                html=(
-                    "<h2 style='font-family:sans-serif;color:#c0392b;padding:40px'>"
-                    "KastomPOS failed to start the internal server.<br>"
-                    "<small>Please restart the application.<br>"
-                    "If the problem persists, check that port 8000 is not in use.</small>"
-                    "</h2>"
-                ),
-                width=600,
-                height=250,
-            )
-            import webview as wv
-            wv.start()
+        ok = wait_for_server(8000, timeout=30)
+
+        if not ok:
+            error_detail = _server_error or "Server did not respond within 30 seconds."
+            show_error_window("Failed to start internal server", error_detail)
             sys.exit(1)
 
     import webview
