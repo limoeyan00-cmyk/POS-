@@ -45,6 +45,7 @@ def build():
         '--onefile',
         '--windowed',
         # Uvicorn internals
+        '--hidden-import=main',
         '--hidden-import=uvicorn.logging',
         '--hidden-import=uvicorn.loops',
         '--hidden-import=uvicorn.loops.auto',

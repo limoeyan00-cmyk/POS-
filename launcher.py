@@ -6,10 +6,13 @@ import time
 import logging
 import traceback
 
+# TOP-LEVEL import so PyInstaller's dependency tracer bundles main.py
+# Do NOT move this inside a function — PyInstaller won't see it there.
+import main as app_module
+
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("kastompos")
 
-# Global to capture server startup error
 _server_error = None
 
 
@@ -20,39 +23,35 @@ def is_port_in_use(port: int) -> bool:
 
 
 def start_server():
-    """Run FastAPI/Uvicorn in a daemon thread.
-    Any exception here is captured and shown to the user.
-    """
+    """Run FastAPI/Uvicorn in a daemon thread."""
     global _server_error
     try:
         import uvicorn
-        import main  # noqa: F401
+        # Pass the app object directly — avoids 'no module named main' at runtime
         uvicorn.run(
-            "main:app",
+            app_module.app,
             host="127.0.0.1",
             port=8000,
             log_level="info",
         )
-    except Exception as e:
+    except Exception:
         _server_error = traceback.format_exc()
         log.error("Server failed to start:\n%s", _server_error)
 
 
 def wait_for_server(port: int, timeout: int = 30) -> bool:
-    """Block until the server accepts connections or the thread crashes."""
     deadline = time.time() + timeout
     while time.time() < deadline:
         if is_port_in_use(port):
             return True
         if _server_error:
-            return False   # thread already crashed
+            return False
         time.sleep(0.5)
     return False
 
 
 def show_error_window(title: str, message: str):
     import webview
-    safe_msg = message.replace("\\", "\\\\").replace("`", "\\`").replace("'", "\\'")
     html = f"""
     <html>
     <body style="font-family:sans-serif;background:#1a1a2e;color:#eee;padding:30px;margin:0">
@@ -61,8 +60,7 @@ def show_error_window(title: str, message: str):
       <pre style="background:#0d0d1a;padding:15px;border-radius:6px;font-size:12px;
                   color:#ff6b6b;overflow:auto;max-height:300px;white-space:pre-wrap">{message}</pre>
       <p style="color:#aaa;font-size:12px">
-        Send a screenshot of this error to support.<br>
-        Then close this window and restart the application.
+        Send a screenshot of this error to support, then restart the application.
       </p>
     </body>
     </html>
@@ -72,9 +70,6 @@ def show_error_window(title: str, message: str):
 
 
 def main():
-    # NOTE: Do NOT os.chdir() here — main.py already uses resource_path()
-    # to locate templates/static relative to sys._MEIPASS when frozen.
-
     if is_port_in_use(8000):
         log.info("Server already running on port 8000 — reusing it.")
     else:
@@ -82,9 +77,7 @@ def main():
         server_thread.start()
 
         log.info("Waiting for server to start...")
-        ok = wait_for_server(8000, timeout=30)
-
-        if not ok:
+        if not wait_for_server(8000, timeout=30):
             error_detail = _server_error or "Server did not respond within 30 seconds."
             show_error_window("Failed to start internal server", error_detail)
             sys.exit(1)
