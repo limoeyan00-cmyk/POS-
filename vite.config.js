@@ -10,8 +10,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Antigravity POS',
-        short_name: 'AG-POS',
+        name: 'KastomPOS',
+        short_name: 'K-POS',
         description: 'Production-ready POS for Kenyan SMEs',
         theme_color: '#0f172a',
         icons: [

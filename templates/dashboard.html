@@ -1,85 +1,238 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="mb-8">
-    <h1 class="text-2xl font-bold">Dashboard</h1>
-    <p class="text-slate-500">Overview of today's business performance.</p>
-</div>
-
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-xl border shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
-                <i class="fas fa-money-bill-wave"></i>
+<!-- Content Header -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Dashboard</h1>
             </div>
-            <span class="text-xs font-bold text-emerald-600">+12%</span>
-        </div>
-        <h3 class="text-slate-500 text-sm font-medium">Daily Revenue</h3>
-        <p class="text-2xl font-bold mt-1">KES 0</p>
-    </div>
-    <div class="bg-white p-6 rounded-xl border shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                <i class="fas fa-shopping-basket"></i>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
             </div>
-            <span class="text-xs font-bold text-blue-600">+5%</span>
         </div>
-        <h3 class="text-slate-500 text-sm font-medium">Total Orders</h3>
-        <p class="text-2xl font-bold mt-1">0</p>
-    </div>
-    <div class="bg-white p-6 rounded-xl border shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-amber-50 text-amber-600 rounded-lg">
-                <i class="fas fa-credit-card"></i>
-            </div>
-            <span class="text-xs font-bold text-amber-600">Action Needed</span>
-        </div>
-        <h3 class="text-slate-500 text-sm font-medium">Credit Owed</h3>
-        <p class="text-2xl font-bold mt-1 text-amber-600">KES 0</p>
-    </div>
-    <div class="bg-white p-6 rounded-xl border shadow-sm">
-        <div class="flex items-center justify-between mb-4">
-            <div class="p-2 bg-purple-50 text-purple-600 rounded-lg">
-                <i class="fas fa-users"></i>
-            </div>
-            <span class="text-xs font-bold text-purple-600">+3 today</span>
-        </div>
-        <h3 class="text-slate-500 text-sm font-medium">Total Customers</h3>
-        <p class="text-2xl font-bold mt-1">0</p>
     </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-        <div class="p-6 border-b flex items-center justify-between">
-            <h2 class="font-bold">Recent Transactions</h2>
-            <a href="/reports" class="text-emerald-600 text-sm font-bold hover:underline">View All</a>
+<!-- Main Content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Active Users</span>
+                        <span class="info-box-number">{{ active_users }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-orange elevation-1"><i class="fa fa-envelope"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">SMS <small>(Outbox)</small></span>
+                        <span class="info-box-number">{{ sms_count }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix hidden-md-up"></div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-money-bill-wave"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Supplier Balances</span>
+                        <span class="info-box-number text-danger"><u>{{ "{:,.0f}".format(supplier_balance) }}</u></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-building"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Stores</span>
+                        <span class="info-box-number">{{ stores_count }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="p-6 text-center py-12 text-slate-400">
-            <i class="fas fa-receipt text-4xl mb-4 opacity-20"></i>
-            <p>No transactions recorded yet today.</p>
+
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 text-center p-3">
+                        <a class="btn btn-app" href="/admin/users/suppliers"><i class="fas fa-users text-orange"></i> Suppliers</a>
+                        <a class="btn btn-app" href="/admin/users/customers"><i class="fas fa-users text-success"></i> Customers</a>
+                        <a class="btn btn-app" href="/admin/add-item"><i class="fas fa-cube text-primary"></i> New Item</a>
+                        <a class="btn btn-app" href="/admin/direct-purchase"><i class="fas fa-shopping-cart text-danger"></i> Direct Purchase</a>
+                        <a class="btn btn-app" href="/admin/stock-balances"><i class="fas fa-external-link-alt"></i> Stock</a>
+                        <a class="btn btn-app" href="/admin/production"><i class="fas fa-cogs text-purple"></i> Production</a>
+                        <a class="btn btn-app" href="/admin/accounting/expenses"><i class="fas fa-paw text-success"></i> Direct Expense</a>
+                        <a class="btn btn-app" href="/admin/reports/cheques"><i class="fas fa-credit-card"></i> Cheques</a>
+                        <a class="btn btn-app" href="/billing"><i class="fas fa-calculator text-danger"></i> New Order</a>
+                        <a class="btn btn-app" href="/admin/rooms/online-bookings"><i class="fas fa-globe text-info"></i> ONLINE SHOP <span class="badge badge-success">new</span></a>
+                        <a class="btn btn-app" href="/admin/requisition"><i class="fas fa-question-circle"></i> Requisition</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Row -->
+        <div class="row">
+            <!-- Notifications -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">Notifications</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a href="/admin/invoices" class="nav-link">
+                                    Due Invoices <small class="text-danger"><i>Total:{{ "{:,.0f}".format(due_invoices) }}</i></small>
+                                    <span class="float-right badge bg-orange">4</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/inventory" class="nav-link">
+                                    Items Count <span class="float-right badge bg-info">{{ items_count }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/stock-balances" class="nav-link">
+                                    Items Needs Restocking <span class="float-right badge bg-danger"><i class="fas fa-external-link-alt"></i></span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/open-sales" class="nav-link">
+                                    Open Sales<sup><small>(Open bills)</small></sup> <span class="float-right badge bg-warning">{{ open_sales }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/sales" class="nav-link">
+                                    Sales List<sup><small>(ALL SALES)</small></sup> <span class="float-right badge bg-primary">{{ all_sales_count }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/mpesa-till" class="nav-link">
+                                    M-Pesa Payments<sup><small>(STK-PUSH)</small></sup> <span class="float-right badge bg-info">0</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">May's top 15 fast moving products</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Summary -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">Today's sales summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Total Sales</b> <span class="float-right badge badge-primary"><i class="fas fa-sort-amount-up"></i> {{ "{:,.2f}".format(today_summary.total_sales) }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Total Complementary</b> <span class="float-right badge badge-primary"><i class="fas fa-sort-amount-up"></i> {{ "{:,.2f}".format(today_summary.complementary) }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Total Paid</b> <span class="float-right badge badge-primary"><i class="fas fa-sort-amount-up"></i> {{ "{:,.2f}".format(today_summary.paid) }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Total Discounts</b> <span class="float-right badge badge-primary"><i class="fas fa-sort-amount-up"></i> {{ "{:,.2f}".format(today_summary.discounts) }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Sales Balance (today)</b> <span class="float-right badge badge-primary"><i class="fas fa-sort-amount-up"></i> {{ "{:,.2f}".format(today_summary.balance) }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Report -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header border-0">
+                        <h3 class="card-title">May/2026 account report</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Account</th>
+                                    <th>Code</th>
+                                    <th>IN</th>
+                                    <th>OUT</th>
+                                    <th>Bal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for acc in accounts %}
+                                <tr>
+                                    <td>{{ acc.name }}</td>
+                                    <td><a href="#">{{ acc.code }}</a></td>
+                                    <td class="text-emerald-600">{{ "{:,.0f}".format(acc['in']) }}</td>
+                                    <td class="text-red-400">{{ "{:,.0f}".format(acc['out']) }}</td>
+                                    <th class="{% if acc.bal < 0 %}text-red-600{% endif %}">{{ "{:,.0f}".format(acc.bal) }}</th>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Chart -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="company_performance" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="bg-white rounded-xl border shadow-sm p-6">
-        <h2 class="font-bold mb-6">Quick Actions</h2>
-        <div class="grid grid-cols-2 gap-4">
-            <a href="/billing" class="flex flex-col items-center gap-3 p-6 rounded-xl border border-emerald-100 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition text-center">
-                <i class="fas fa-plus-circle text-2xl"></i>
-                <span class="font-bold text-sm">New Bill</span>
-            </a>
-            <a href="/customers" class="flex flex-col items-center gap-3 p-6 rounded-xl border border-blue-100 bg-blue-50 text-blue-700 hover:bg-blue-100 transition text-center">
-                <i class="fas fa-user-plus text-2xl"></i>
-                <span class="font-bold text-sm">Add Customer</span>
-            </a>
-            <a href="/inventory" class="flex flex-col items-center gap-3 p-6 rounded-xl border border-slate-100 bg-slate-50 text-slate-700 hover:bg-slate-100 transition text-center">
-                <i class="fas fa-box text-2xl"></i>
-                <span class="font-bold text-sm">Add Product</span>
-            </a>
-            <a href="/reports" class="flex flex-col items-center gap-3 p-6 rounded-xl border border-slate-100 bg-slate-50 text-slate-700 hover:bg-slate-100 transition text-center">
-                <i class="fas fa-file-invoice-dollar text-2xl"></i>
-                <span class="font-bold text-sm">View Profit</span>
-            </a>
-        </div>
-    </div>
-</div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Month', 'Sales', 'Expenses'],
+            ['Jan', 464285, 194853],
+            ['Feb', 228000, 199908],
+            ['Mar', 126064, 6445],
+            ['Apr', 706970, 224569],
+            ['May', 193003, 186022]
+        ]);
+
+        var options = {
+            title: 'KastomPOS ERP Demo 2026 Performance',
+            curveType: 'function',
+            legend: { position: 'bottom' },
+            colors: ['#008080', '#fd7e14']
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('company_performance'));
+        chart.draw(data, options);
+    }
+</script>
 {% endblock %}

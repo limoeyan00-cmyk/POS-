@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 
-export const db = new Dexie('AntigravityPOS');
+export const db = new Dexie('KastomPOS');
 
 db.version(1).stores({
   products: '++id, name, category, sku, barcode, sellingPrice',
@@ -16,7 +16,7 @@ db.on('ready', async () => {
   const settingsCount = await db.settings.count();
   if (settingsCount === 0) {
     await db.settings.bulkAdd([
-      { key: 'businessName', value: 'Antigravity SME' },
+      { key: 'businessName', value: 'KastomPOS SME' },
       { key: 'currency', value: 'KES' },
       { key: 'lowStockThreshold', value: 10 },
       { key: 'kraIntegration', value: false },

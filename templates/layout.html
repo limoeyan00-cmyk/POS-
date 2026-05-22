@@ -1,75 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antigravity POS - Restaurant & Guesthouse</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="KastomPOS Enterprise Resource Planning and Point of Sale System. Modern, responsive, and highly secure.">
+    <meta property="og:title" content="KastomPOS - Enterprise ERP & POS">
+    <meta property="og:description" content="Manage your operations, items, rooms, payroll, and financials seamlessly with KastomPOS.">
+    <meta property="og:type" content="website">
+    <title>{% block title %}{{ settings.business_name|default('KastomPOS') }}{% endblock %}</title>
+
+    <!-- Font Awesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Font Awesome 4 (legacy icon support) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style (AdminLTE) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
+    <!-- daterangepicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <!-- jQuery UI -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- Tailwind (excluded on report pages that use AdminLTE directly) -->
+    {% if active_page not in ['room_sales_report', 'room_occupancy_report', 'room_collections_report', 'general_sales'] %}
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    {% endif %}
+    <!-- jQuery (early load for plugins that need it in <head>) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
-        .sidebar-active { background-color: #1e293b; border-left: 4px solid #10b981; }
+        .main-sidebar { background-color: #343a40 !important; }
+        .sidebar-dark-primary .nav-sidebar .nav-link.active {
+            background-color: #008080 !important;
+            color: #fff !important;
+        }
+        .brand-link { border-bottom: 1px solid #4b545c !important; }
+        .badge-success { background-color: #28a745 !important; }
+        .text-orange { color: #fd7e14 !important; }
+        .sidebar-mini.sidebar-collapse .main-sidebar { width: 4.6rem; }
+        .sidebar-mini.sidebar-collapse .main-sidebar:hover { width: 250px !important; }
+        .navbar-white { background-color: #ffffff !important; }
+        
+        .backbtn {
+            border-radius: 10rem;
+            border: 1px solid #b10000;
+            font-size: 1.2rem;
+            margin: 5px;
+            padding-right: 1.3rem;
+            color: #00817a;
+            background-color: transparent;
+        }
+
+        .backbtn:hover {
+            background-color: #b10000 !important;
+            color: white !important;
+        }
+
+        .my-btn {
+            background-color: #E1E1E1;
+            border-radius: 0px;
+            border-top: none;
+            border-right: none;
+            color: black !important;
+            font-weight: bold;
+            margin-right: 2px;
+        }
+
+        #active {
+            border: unset !important;
+            color: #fff !important;
+            background: #017870 !important;
+        }
+
+        /* Responsive Fixes */
+        .content-wrapper { overflow-x: hidden; }
+        .table-responsive { border: none !important; }
+        table.dataTable { width: 100% !important; }
+        @media (max-width: 576px) {
+            .content-header h1 { font-size: 1.5rem; display: flex; align-items: center; }
+            .backbtn { padding-right: 0.8rem; font-size: 1rem; }
+            .card-tools { margin-top: 10px; float: none !important; width: 100%; }
+            .card-tools .btn { width: 100%; margin-bottom: 5px; }
+        }
+
+        /* Custom styles from reference site custom.css */
+        input[type=radio] {
+            border: 0px;
+            width: 18px !important;
+            height: 18px !important;
+        }
+        input[type=checkbox] {
+            border: 0px;
+            height: 20px !important;
+            width: 20px !important;
+        }
+        .row-rg {
+            border-right: 1px solid #cccccc !important;
+        }
+        .money2 {
+            border: 0 !important;
+            outline: 0 !important;
+            background-color: unset !important;
+            font-size: 20px !important;
+            font-weight: 900 !important;
+            text-decoration: underline;
+        }
+        .money2:focus {
+            outline: none !important;
+            background-color: unset !important;
+        }
+        .btnapp-rg {
+            font-size: 15px !important;
+            font-weight: bolder !important;
+        }
+        .bg-orangered {
+            background-color: #ff7700 !important;
+        }
+        .fa-dot-circle-o {
+            color: #00817a !important;
+        }
+        .card {
+            box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 255, 255, 0.6) !important;
+        }
+        .h5 {
+            font-weight: bolder !important;
+        }
+        .table-sm th {
+            padding: .2rem !important;
+        }
+        .card-body {
+            border-radius: .75rem !important;
+        }
+        .btn {
+            border-radius: .4rem !important;
+        }
+
+        /* Premium presets for reports/forms */
+        .btn-rgp {
+            border: 1px solid #1177BB;
+            color: #000;
+        }
+        .btn-rgp:hover {
+            background-color: #569CD6;
+        }
+        .btn-rgs {
+            border: 1px solid green;
+            color: green;
+        }
+        .btn-rgs:hover {
+            background-color: #AEDAE4;
+        }
+        .btn-rgd {
+            border: 1px solid red;
+            color: red;
+        }
+        .btn-rgd:hover {
+            background-color: #f8d7da;
+        }
     </style>
+    {% block styles %}{% endblock %}
 </head>
-<body class="bg-slate-50 font-sans text-slate-900">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <script>
+        // Apply sidebar state as early as possible to avoid flicker
+        if (localStorage.getItem('sidebar-state') === 'collapsed') {
+            document.body.classList.add('sidebar-collapse');
+            document.body.classList.add('sidebar-closed');
+        }
+    </script>
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/" class="nav-link my-btn {% if active_page == 'dashboard' %}active{% endif %}">Home <i class="fa fa-home"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/admin/rooms/book-room" class="nav-link my-btn {% if active_page == 'book_room' %}active{% endif %}">Book Room</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/admin/rooms/bookings" class="nav-link my-btn {% if active_page == 'bookings' %}active{% endif %}">Bookings</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/admin/rooms/online-bookings" class="nav-link my-btn {% if active_page == 'online_bookings' %}active{% endif %}">Online Bookings</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/admin/rooms/bookings-calendar" class="nav-link my-btn {% if active_page == 'bookings_calendar' %}active{% endif %}" {% if active_page == 'bookings_calendar' %}id="active"{% endif %}>Bookings Calendar</a>
+                </li>
+            </ul>
 
-    <div class="flex min-h-screen">
+            {% set current_user = get_current_user() %}
+            {% set alerts = get_notifications() %}
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span class="badge badge-warning navbar-badge" style="background-color: #00817a; color: white;">{{ alerts|length }}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right shadow-lg border-0" style="border-radius: 8px; overflow: hidden; width: 320px;">
+                        <span class="dropdown-item dropdown-header font-weight-bold bg-teal text-white py-2" style="background-color: #00817a !important; color: white !important;">{{ alerts|length }} Notifications</span>
+                        <div class="dropdown-divider m-0"></div>
+                        
+                        <div style="max-height: 250px; overflow-y: auto;">
+                            {% for a in alerts %}
+                            <a href="{{ a.link }}" class="dropdown-item d-flex align-items-start py-3" style="border-bottom: 1px solid #f4f6f9; white-space: normal;">
+                                <div class="mr-3">
+                                    <span class="d-inline-block text-center rounded-circle {{ a.class }}" style="width: 32px; height: 32px; line-height: 32px; background-color: #f4f6f9;">
+                                        <i class="{{ a.icon }}"></i>
+                                    </span>
+                                </div>
+                                <div style="flex: 1;">
+                                    <p class="mb-0 text-sm font-weight-bold text-dark">{{ a.title }}</p>
+                                    <p class="text-xs text-muted mb-0" style="line-height: 1.3;">{{ a.description }}</p>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="dropdown-divider m-0"></div>
+                        <a href="/admin/notifications" class="dropdown-item dropdown-footer text-center font-weight-bold text-teal py-2" style="color: #00817a !important;">
+                            See All Notifications
+                        </a>
+                    </div>
+                </li>
+                
+                <!-- User Profile Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <img src="https://ui-avatars.com/api/?name={{ current_user.name|default('John')|urlencode }}&background=00817a&color=fff" class="img-circle elevation-2" style="height: 30px; width: 30px; object-fit: cover;" alt="User">
+                        <span class="ml-2 d-none d-md-inline text-dark font-weight-bold">{{ current_user.name|default('John') }}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right shadow-lg border-0" style="border-radius: 8px; overflow: hidden; width: 220px;">
+                        <div class="p-3 text-center bg-light" style="border-bottom: 1px solid #f4f6f9;">
+                            <img src="https://ui-avatars.com/api/?name={{ current_user.name|default('John')|urlencode }}&background=00817a&color=fff" class="img-circle elevation-2 mb-2" style="height: 50px; width: 50px;" alt="User">
+                            <h6 class="font-weight-bold text-dark mb-0">{{ current_user.name|default('John') }}</h6>
+                            <small class="text-teal font-weight-bold">@{{ current_user.username|default('user') }}</small>
+                        </div>
+                        <a href="/admin/profile" class="dropdown-item py-2"><i class="fas fa-user mr-2 text-teal"></i> My Profile</a>
+                        <div class="dropdown-divider m-0"></div>
+                        <a href="/logout" class="dropdown-item py-2 text-orange"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
         <!-- Sidebar -->
-        <aside class="w-64 bg-slate-900 text-white flex flex-col fixed h-full">
-            <div class="p-6 border-b border-slate-800">
-                <h1 class="text-xl font-bold tracking-tight flex items-center gap-2">
-                    <i class="fas fa-hotel text-emerald-500"></i>
-                    AG POS
-                </h1>
-            </div>
-            <nav class="flex-1 p-4 space-y-2 mt-4">
-                <a href="/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition {% if active_page == 'dashboard' %}sidebar-active{% endif %}">
-                    <i class="fas fa-th-large w-5"></i> Dashboard
-                </a>
-                <a href="/customers" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition {% if active_page == 'customers' %}sidebar-active{% endif %}">
-                    <i class="fas fa-users w-5"></i> Customers
-                </a>
-                <a href="/inventory" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition {% if active_page == 'inventory' %}sidebar-active{% endif %}">
-                    <i class="fas fa-utensils w-5"></i> Menu & Rooms
-                </a>
-                <a href="/billing" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition {% if active_page == 'billing' %}sidebar-active{% endif %}">
-                    <i class="fas fa-shopping-cart w-5"></i> New Bill
-                </a>
-                <a href="/reports" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition {% if active_page == 'reports' %}sidebar-active{% endif %}">
-                    <i class="fas fa-chart-line w-5"></i> Reports
-                </a>
-            </nav>
-            <div class="p-6 border-t border-slate-800 text-xs text-slate-500">
-                v1.0.0 (Kenyan SME)
-            </div>
-        </aside>
+        {% include '_sidebar.html' %}
 
-        <!-- Main Content -->
-        <main class="flex-1 ml-64 flex flex-col">
-            <!-- Header -->
-            <header class="h-16 bg-white border-b flex items-center justify-between px-8 sticky top-0 z-10">
-                <div class="flex items-center gap-4">
-                    {% if settings.offline_mode == "True" %}
-                    <div class="flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold border border-amber-200">
-                        <i class="fas fa-wifi-slash"></i> RUNNING OFFLINE
-                    </div>
-                    {% else %}
-                    <div class="flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold border border-emerald-200">
-                        <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                        ONLINE
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="flex items-center gap-4">
-                    <span class="text-sm font-medium text-slate-600">Admin Staff</span>
-                    <div class="w-8 h-8 bg-slate-200 rounded-full flex items-center justify-center text-xs font-bold">AS</div>
-                </div>
-            </header>
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            {% block content %}{% endblock %}
+        </div>
 
-            <div class="p-8">
-                {% block content %}{% endblock %}
+        <footer class="main-footer">
+            <strong>KastomPOS ERP</strong>
+            <div class="float-right d-none d-sm-inline-block">
+                <b>KastomPOS Version 1.0 | Copyright &copy; 2026</b>
             </div>
-        </main>
+        </footer>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Restore sidebar scroll position
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.scrollTop = localStorage.getItem('sidebar-scroll') || 0;
+                sidebar.addEventListener('scroll', () => {
+                    localStorage.setItem('sidebar-scroll', sidebar.scrollTop);
+                });
+            }
+
+            // Save sidebar state (collapsed/expanded)
+            $(document).on('collapsed.lte.pushmenu', function() {
+                localStorage.setItem('sidebar-state', 'collapsed');
+            });
+            $(document).on('shown.lte.pushmenu', function() {
+                localStorage.setItem('sidebar-state', 'expanded');
+            });
+        });
+    </script>
+    {% block scripts %}{% endblock %}
 </body>
 </html>
