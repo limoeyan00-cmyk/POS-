@@ -12,28 +12,39 @@ def build():
             print(f"Cleaning up {folder}...")
             shutil.rmtree(folder)
 
-    # Define the separator based on the platform
     separator = ';' if sys.platform.startswith('win') else ':'
-    
-    added_files = [
-        f'templates{separator}templates',
-    ]
-    
-    # Only add .env if it exists
+
+    # ------------------------------------------------------------------
+    # DATA FILES
+    # We include main.py, models.py, database.py as raw data files
+    # (destination = '.', i.e. the root of sys._MEIPASS).
+    # This is the only reliable way to make local scripts importable
+    # from a PyInstaller --onefile --windowed bundle on Windows.
+    # ------------------------------------------------------------------
+    local_modules = ['main.py', 'models.py', 'database.py']
+    added_files = []
+
+    for mod in local_modules:
+        if os.path.exists(mod):
+            added_files.append(f'{mod}{separator}.')
+            print(f"Adding local module: {mod}")
+        else:
+            print(f"WARNING: {mod} not found — bundle may fail!")
+
+    added_files.append(f'templates{separator}templates')
+
     if os.path.exists('.env'):
         added_files.append(f'.env{separator}.')
-    
-    # Include static folder or create a placeholder
+
     if os.path.exists('static') and os.listdir('static'):
         added_files.append(f'static{separator}static')
     else:
         os.makedirs('build_static', exist_ok=True)
         added_files.append(f'build_static{separator}static')
 
-    # Detect if we have an icon
+    # Detect icon
     icon_args = []
-    icon_candidates = ['static/favicon.ico', 'icon.ico']
-    for ic in icon_candidates:
+    for ic in ['static/favicon.ico', 'icon.ico']:
         if os.path.exists(ic):
             icon_args = [f'--icon={ic}']
             print(f"Using icon: {ic}")
@@ -45,9 +56,6 @@ def build():
         '--onefile',
         '--windowed',
         # Uvicorn internals
-        '--hidden-import=main',
-        '--hidden-import=models',
-        '--hidden-import=database',
         '--hidden-import=uvicorn.logging',
         '--hidden-import=uvicorn.loops',
         '--hidden-import=uvicorn.loops.auto',
@@ -62,9 +70,9 @@ def build():
         '--hidden-import=webview.platforms.winforms',
         '--hidden-import=clr',
         '--hidden-import=pythonnet',
-        # SQLAlchemy dialects
+        # SQLAlchemy
         '--hidden-import=sqlalchemy.dialects.sqlite',
-        # FastAPI internals
+        # FastAPI
         '--hidden-import=fastapi.routing',
         '--hidden-import=multipart',
         # Collect full packages
@@ -72,7 +80,7 @@ def build():
         '--collect-all=uvicorn',
         '--collect-all=jinja2',
         '--collect-all=sqlalchemy',
-        # Exclude unused heavy packages to keep EXE lean
+        # Trim unused heavy packages
         '--exclude-module=tkinter',
         '--exclude-module=matplotlib',
         '--exclude-module=numpy',
@@ -82,13 +90,12 @@ def build():
 
     args += icon_args
 
-    # Add data files
     for file_mapping in added_files:
         args.append(f'--add-data={file_mapping}')
 
     print(f"Running PyInstaller with {len(args)} arguments...")
     PyInstaller.__main__.run(args)
-    
+
     print("\nBUILD COMPLETE!")
     print("   Standalone EXE -> dist/KastomPOS.exe")
     print("   Run the Inno Setup compiler on installer.iss to create the Setup wizard.")
