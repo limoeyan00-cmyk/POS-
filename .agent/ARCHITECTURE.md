@@ -71,6 +71,24 @@ Modular knowledge domains that agents can load on-demand. based on task context.
 | `frontend-design`       | UI/UX patterns, design systems                                        |
 | `ui-ux-pro-max`         | 50 styles, 21 palettes, 50 fonts                                      |
 
+### Visual & Design Taste (taste-skill)
+
+| Skill | Description |
+| ------------------------- | --------------------------------------------------------------------- |
+| `taste-skill`             | v2 (experimental) brief inference, design-system map, spacing/type.   |
+| `taste-skill-v1`          | Original v1 of taste-skill.                                           |
+| `gpt-tasteskill`          | Stricter variant for GPT/Codex: higher layout variance, anti-slop.   |
+| `image-to-code-skill`     | Image-first workflow (generate comps -> analyze -> implement).        |
+| `redesign-skill`          | UI audit & redesign protocol for existing codebases.                  |
+| `soft-skill`              | Calm, premium UI with softer contrast, whitespace, spring motion.     |
+| `minimalist-skill`        | Restrained palette, crisp, clean Notion/Linear-like structure.        |
+| `brutalist-skill`         | Sharp Swiss type, high contrast, experimental layouts.                |
+| `stitch-skill`            | Google Stitch-compatible rules and DESIGN.md export.                  |
+| `output-skill`            | Full output enforcement, prevents placeholders/comments.              |
+| `imagegen-frontend-web`   | Image-only: premium website comps and landing frames.                 |
+| `imagegen-frontend-mobile`| Image-only: premium mobile UI screens and flows.                      |
+| `brandkit`                | Image-only: branding kits, logos, palettes, applications.             |
+
 ### Backend & API
 
 | Skill                   | Description                    |
@@ -267,7 +285,7 @@ For details, see [scripts/README.md](scripts/README.md)
 | Metric              | Value                         |
 | ------------------- | ----------------------------- |
 | **Total Agents**    | 20                            |
-| **Total Skills**    | 36                            |
+| **Total Skills**    | 49                            |
 | **Total Workflows** | 11                            |
 | **Total Scripts**   | 2 (master) + 18 (skill-level) |
 | **Coverage**        | ~90% web/mobile development   |
