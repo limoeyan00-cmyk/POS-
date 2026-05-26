@@ -24,61 +24,100 @@
         <!-- Info boxes -->
         <div class="row">
             <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box">
-                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">Active Users</span>
-                        <span class="info-box-number">{{ active_users }}</span>
+                <div class="card p-4 flex flex-row items-center border border-slate-100 hover:border-teal-500/20 transition-all duration-300">
+                    <div class="w-12 h-12 bg-teal-50 text-teal-700 rounded-xl flex items-center justify-center mr-4 text-xl" style="width: 48px; height: 48px; min-width: 48px;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">Active Users</span>
+                        <span class="text-2xl font-bold text-slate-800 font-mono">{{ active_users }}</span>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-orange elevation-1"><i class="fa fa-envelope"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">SMS <small>(Outbox)</small></span>
-                        <span class="info-box-number">{{ sms_count }}</span>
+                <div class="card p-4 flex flex-row items-center border border-slate-100 hover:border-amber-500/20 transition-all duration-300">
+                    <div class="w-12 h-12 bg-amber-50 text-amber-700 rounded-xl flex items-center justify-center mr-4 text-xl" style="width: 48px; height: 48px; min-width: 48px;">
+                        <i class="fa fa-envelope"></i>
                     </div>
-                </div>
-            </div>
-            <div class="clearfix hidden-md-up"></div>
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-money-bill-wave"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">Supplier Balances</span>
-                        <span class="info-box-number text-danger"><u>{{ "{:,.0f}".format(supplier_balance) }}</u></span>
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">SMS Outbox</span>
+                        <span class="text-2xl font-bold text-slate-800 font-mono">{{ sms_count }}</span>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-building"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">Stores</span>
-                        <span class="info-box-number">{{ stores_count }}</span>
+                <div class="card p-4 flex flex-row items-center border border-slate-100 hover:border-red-500/20 transition-all duration-300">
+                    <div class="w-12 h-12 bg-red-50 text-red-700 rounded-xl flex items-center justify-center mr-4 text-xl" style="width: 48px; height: 48px; min-width: 48px;">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">Supplier Balances</span>
+                        <span class="text-2xl font-bold text-red-600 font-mono">{{ "{:,.0f}".format(supplier_balance) }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card p-4 flex flex-row items-center border border-slate-100 hover:border-blue-500/20 transition-all duration-300">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center mr-4 text-xl" style="width: 48px; height: 48px; min-width: 48px;">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">Stores</span>
+                        <span class="text-2xl font-bold text-slate-800 font-mono">{{ stores_count }}</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Quick Actions -->
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12 text-center p-3">
-                        <a class="btn btn-app" href="/admin/users/suppliers"><i class="fas fa-users text-orange"></i> Suppliers</a>
-                        <a class="btn btn-app" href="/admin/users/customers"><i class="fas fa-users text-success"></i> Customers</a>
-                        <a class="btn btn-app" href="/admin/add-item"><i class="fas fa-cube text-primary"></i> New Item</a>
-                        <a class="btn btn-app" href="/admin/direct-purchase"><i class="fas fa-shopping-cart text-danger"></i> Direct Purchase</a>
-                        <a class="btn btn-app" href="/admin/stock-balances"><i class="fas fa-external-link-alt"></i> Stock</a>
-                        <a class="btn btn-app" href="/admin/production"><i class="fas fa-cogs text-purple"></i> Production</a>
-                        <a class="btn btn-app" href="/admin/accounting/expenses"><i class="fas fa-paw text-success"></i> Direct Expense</a>
-                        <a class="btn btn-app" href="/admin/reports/cheques"><i class="fas fa-credit-card"></i> Cheques</a>
-                        <a class="btn btn-app" href="/billing"><i class="fas fa-calculator text-danger"></i> New Order</a>
-                        <a class="btn btn-app" href="/admin/rooms/online-bookings"><i class="fas fa-globe text-info"></i> ONLINE SHOP <span class="badge badge-success">new</span></a>
-                        <a class="btn btn-app" href="/admin/requisition"><i class="fas fa-question-circle"></i> Requisition</a>
-                    </div>
+        <div class="card border border-slate-100">
+            <div class="card-body p-6">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4 text-left">Quick Navigation</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-11 gap-3">
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/users/suppliers">
+                        <i class="fas fa-users text-lg mb-2 text-amber-500"></i>
+                        <span class="text-xs font-medium text-center">Suppliers</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/users/customers">
+                        <i class="fas fa-users text-lg mb-2 text-emerald-500"></i>
+                        <span class="text-xs font-medium text-center">Customers</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/add-item">
+                        <i class="fas fa-cube text-lg mb-2 text-blue-500"></i>
+                        <span class="text-xs font-medium text-center">New Item</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/direct-purchase">
+                        <i class="fas fa-shopping-cart text-lg mb-2 text-red-500"></i>
+                        <span class="text-xs font-medium text-center">Purchase</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/stock-balances">
+                        <i class="fas fa-external-link-alt text-lg mb-2 text-slate-500"></i>
+                        <span class="text-xs font-medium text-center">Stock</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/production">
+                        <i class="fas fa-cogs text-lg mb-2 text-purple-500"></i>
+                        <span class="text-xs font-medium text-center">Production</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/accounting/expenses">
+                        <i class="fas fa-paw text-lg mb-2 text-emerald-600"></i>
+                        <span class="text-xs font-medium text-center">Expense</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/reports/cheques">
+                        <i class="fas fa-credit-card text-lg mb-2 text-slate-600"></i>
+                        <span class="text-xs font-medium text-center">Cheques</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/billing">
+                        <i class="fas fa-calculator text-lg mb-2 text-rose-500"></i>
+                        <span class="text-xs font-medium text-center">New Order</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/rooms/online-bookings">
+                        <i class="fas fa-globe text-lg mb-2 text-cyan-600"></i>
+                        <span class="text-xs font-medium text-center">Online Shop</span>
+                    </a>
+                    <a class="flex flex-col items-center justify-center p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all duration-200 text-slate-700 hover:text-teal-700 hover:border-teal-500/20" href="/admin/requisition">
+                        <i class="fas fa-question-circle text-lg mb-2 text-amber-600"></i>
+                        <span class="text-xs font-medium text-center">Requisition</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -226,9 +265,14 @@
 
         var options = {
             title: 'KastomPOS ERP Demo 2026 Performance',
+            titleTextStyle: { fontName: 'Outfit', fontSize: 16, bold: true, color: '#18181b' },
             curveType: 'function',
-            legend: { position: 'bottom' },
-            colors: ['#008080', '#fd7e14']
+            legend: { position: 'bottom', textStyle: { color: '#64748b', fontName: 'Geist', fontSize: 12 } },
+            colors: ['#008080', '#ef4444'],
+            backgroundColor: 'transparent',
+            chartArea: { width: '90%', height: '70%' },
+            hAxis: { textStyle: { color: '#64748b', fontName: 'Geist', fontSize: 11 }, gridlines: { color: 'transparent' } },
+            vAxis: { textStyle: { color: '#64748b', fontName: 'Geist', fontSize: 11 }, gridlines: { color: '#f1f5f9' }, baselineColor: '#e2e8f0' }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('company_performance'));

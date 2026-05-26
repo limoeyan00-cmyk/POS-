@@ -4,43 +4,7 @@
 
 {% block styles %}
 <style>
-    .tb_title {
-        background-color: #00817a !important;
-        color: white !important;
-        font-weight: bold;
-        transform: skewX(-10deg);
-        display: inline-block;
-        padding: 5px 20px;
-        margin-bottom: 15px;
-    }
-    .tb_title_inner {
-        transform: skewX(10deg);
-    }
-    .card {
-        border-radius: 0px !important;
-        border-top: 3px solid #00817a !important;
-    }
-    .backbtn {
-        border-radius: 50%;
-        border: 1px solid #00817a;
-        width: 32px;
-        height: 32px;
-        line-height: 30px;
-        text-align: center;
-        padding: 0;
-        margin-right: 10px;
-        color: #00817a;
-        background-color: transparent;
-        transition: all 0.3s ease;
-    }
-    .backbtn:hover {
-        background-color: #00817a !important;
-        color: white !important;
-    }
-    .modal-content {
-        border-radius: 0px !important;
-        border-top: 5px solid #00817a !important;
-    }
+    /* Inherit global modern dashboard layout styles */
 </style>
 {% endblock %}
 
@@ -191,33 +155,33 @@
 <div class="modal fade" id="addStaffModal" tabindex="-1" role="dialog" aria-labelledby="addStaffModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-teal text-white">
-                <h5 class="modal-title font-weight-bold" id="addStaffModalLabel">Add New Employee</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStaffModalLabel">Add New Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="/admin/staff/add" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="font-weight-bold">Full Name <span class="text-danger">*</span></label>
+                        <label>Full Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" placeholder="e.g. John Doe" required>
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">Username <span class="text-danger">*</span></label>
+                        <label>Username <span class="text-danger">*</span></label>
                         <input type="text" name="username" class="form-control" placeholder="e.g. johndoe" required>
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">Phone Number</label>
+                        <label>Phone Number</label>
                         <input type="text" name="phone" class="form-control" placeholder="e.g. 0712345678">
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">National ID Number</label>
+                        <label>National ID Number</label>
                         <input type="text" name="id_number" class="form-control" placeholder="e.g. 12345678">
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label class="font-weight-bold">Role <span class="text-danger">*</span></label>
+                            <label>Role <span class="text-danger">*</span></label>
                             <select name="role" class="form-control" required>
                                 <option value="waiter">Waiter</option>
                                 <option value="cashier">Cashier</option>
@@ -231,16 +195,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">Basic Salary</label>
+                        <label>Basic Salary</label>
                         <input type="number" name="basic_salary" step="0.01" class="form-control" value="0.0">
                     </div>
                     <div class="form-group mb-0">
-                        <label class="font-weight-bold">Password <span class="text-danger">*</span></label>
+                        <label>Password <span class="text-danger">*</span></label>
                         <input type="password" name="password" class="form-control" placeholder="Enter password" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-rgp">Register Employee</button>
                 </div>
             </form>
@@ -253,33 +217,33 @@
 <div class="modal fade" id="editModal{{ s.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ s.id }}" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-teal text-white">
-                <h5 class="modal-title font-weight-bold" id="editModalLabel{{ s.id }}">Edit Employee: {{ s.name }}</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel{{ s.id }}">Edit Employee: {{ s.name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="/admin/staff/edit/{{ s.id }}" method="POST">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label class="font-weight-bold">Full Name <span class="text-danger">*</span></label>
+                        <label>Full Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" value="{{ s.name }}" required>
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">Username <span class="text-danger">*</span></label>
+                        <label>Username <span class="text-danger">*</span></label>
                         <input type="text" name="username" class="form-control" value="{{ s.username }}" required>
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">Phone Number</label>
+                        <label>Phone Number</label>
                         <input type="text" name="phone" class="form-control" value="{{ s.phone if s.phone else '' }}" placeholder="e.g. 0712345678">
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">National ID Number</label>
+                        <label>National ID Number</label>
                         <input type="text" name="id_number" class="form-control" value="{{ s.id_number if s.id_number else '' }}" placeholder="e.g. 12345678">
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label class="font-weight-bold">Role <span class="text-danger">*</span></label>
+                            <label>Role <span class="text-danger">*</span></label>
                             <select name="role" class="form-control" required>
                                 <option value="waiter" {% if s.role == 'waiter' %}selected{% endif %}>Waiter</option>
                                 <option value="cashier" {% if s.role == 'cashier' %}selected{% endif %}>Cashier</option>
@@ -292,7 +256,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-6">
-                            <label class="font-weight-bold">Status <span class="text-danger">*</span></label>
+                            <label>Status <span class="text-danger">*</span></label>
                             <select name="is_active" class="form-control" required>
                                 <option value="true" {% if s.is_active %}selected{% endif %}>Active</option>
                                 <option value="false" {% if not s.is_active %}selected{% endif %}>Inactive</option>
@@ -300,16 +264,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">Basic Salary</label>
+                        <label>Basic Salary</label>
                         <input type="number" name="basic_salary" step="0.01" class="form-control" value="{{ s.basic_salary }}">
                     </div>
                     <div class="form-group mb-0">
-                        <label class="font-weight-bold">New Password <small class="text-muted">(leave blank to keep current)</small></label>
+                        <label>New Password <small class="text-muted">(leave blank to keep current)</small></label>
                         <input type="password" name="password" class="form-control" placeholder="Enter new password">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-flat" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-rgp">Save Changes</button>
                 </div>
             </form>
