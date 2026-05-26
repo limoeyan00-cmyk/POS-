@@ -59,22 +59,15 @@ def wait_for_server(port: int, timeout: int = 30) -> bool:
 
 
 def show_error_window(title: str, message: str):
-    import webview
-    html = f"""
-    <html>
-    <body style="font-family:sans-serif;background:#1a1a2e;color:#eee;padding:30px;margin:0">
-      <h2 style="color:#e74c3c">KastomPOS - Startup Error</h2>
-      <p style="color:#ccc">{title}</p>
-      <pre style="background:#0d0d1a;padding:15px;border-radius:6px;font-size:12px;
-                  color:#ff6b6b;overflow:auto;max-height:300px;white-space:pre-wrap">{message}</pre>
-      <p style="color:#aaa;font-size:12px">
-        Screenshot this error and send to support, then restart the application.
-      </p>
-    </body>
-    </html>
-    """
-    webview.create_window(title, html=html, width=720, height=500)
-    webview.start()
+    from PyQt6.QtWidgets import QApplication, QMessageBox
+    app = QApplication.instance() or QApplication(sys.argv)
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Icon.Critical)
+    msg.setText("KastomPOS - Startup Error")
+    msg.setInformativeText(title)
+    msg.setDetailedText(message)
+    msg.setWindowTitle("Startup Error")
+    msg.exec()
 
 
 def main():
@@ -90,18 +83,38 @@ def main():
             show_error_window("Failed to start internal server", error_detail)
             sys.exit(1)
 
-    import webview
-    webview.create_window(
-        "KastomPOS - ERP & Point of Sale",
-        "http://127.0.0.1:8000",
-        width=1280,
-        height=800,
-        min_size=(1024, 768),
-        confirm_close=True,
-        text_select=True,
-    )
-    webview.start()
-    sys.exit(0)
+    from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
+    from PyQt6.QtWebEngineWidgets import QWebEngineView
+    from PyQt6.QtCore import QUrl
+
+    class MainWindow(QMainWindow):
+        def __init__(self):
+            super().__init__()
+            self.setWindowTitle("KastomPOS - ERP & Point of Sale")
+            self.resize(1280, 800)
+            self.setMinimumSize(1024, 768)
+
+            self.browser = QWebEngineView()
+            self.browser.setUrl(QUrl("http://127.0.0.1:8000"))
+            self.setCentralWidget(self.browser)
+
+        def closeEvent(self, event):
+            reply = QMessageBox.question(
+                self,
+                "Exit KastomPOS",
+                "Are you sure you want to exit KastomPOS?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No
+            )
+            if reply == QMessageBox.StandardButton.Yes:
+                event.accept()
+            else:
+                event.ignore()
+
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

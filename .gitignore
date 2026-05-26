@@ -8,5 +8,10 @@ __pycache__/
 node_modules/
 downloads/
 pos.db
+database.db
+pos_erp.db
 dist/
+build/
+.venv/
 .DS_Store
+*.db

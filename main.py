@@ -7743,7 +7743,7 @@ async def delete_attribute(id: int, db: Session = Depends(get_db)):
 async def get_brands(request: Request, db: Session = Depends(get_db)):
     items = get_simulated_items(db, "sim_brands", [
         {"id": 1, "name": "KastomSoft", "description": "Default ERP Brand"},
-        {"id": 2, "name": "JiPOS Premium", "description": "Legacy branding option"}
+        {"id": 2, "name": "KastomPOS Premium", "description": "Premium branding option"}
     ])
     return templates.TemplateResponse(
         request=request,

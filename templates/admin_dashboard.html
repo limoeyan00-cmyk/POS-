@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
+    <p class="text-slate-500">Overview of your POS system records.</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Stat Card 1 -->
+    <div class="bg-white p-6 rounded-2xl border shadow-sm hover:shadow-md transition">
+        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-4 text-xl">
+            <i class="fas fa-utensils"></i>
+        </div>
+        <h3 class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-1">Products</h3>
+        <p class="text-3xl font-black text-slate-900">{{ product_count }}</p>
+        <p class="text-xs text-slate-400 mt-2">Food & Drinks registered</p>
+    </div>
+
+    <!-- Stat Card 2 -->
+    <div class="bg-white p-6 rounded-2xl border shadow-sm hover:shadow-md transition">
+        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-4 text-xl">
+            <i class="fas fa-bed"></i>
+        </div>
+        <h3 class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-1">Rooms</h3>
+        <p class="text-3xl font-black text-slate-900">{{ room_count }}</p>
+        <p class="text-xs text-slate-400 mt-2">Total guest rooms</p>
+    </div>
+
+    <!-- Stat Card 3 -->
+    <div class="bg-white p-6 rounded-2xl border shadow-sm hover:shadow-md transition">
+        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center mb-4 text-xl">
+            <i class="fas fa-file-invoice"></i>
+        </div>
+        <h3 class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-1">Receipts</h3>
+        <p class="text-3xl font-black text-slate-900">{{ receipt_count }}</p>
+        <p class="text-xs text-slate-400 mt-2">Generated in system</p>
+    </div>
+
+    <!-- Stat Card 4 -->
+    <div class="bg-white p-6 rounded-2xl border shadow-sm hover:shadow-md transition">
+        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-4 text-xl">
+            <i class="fas fa-user-shield"></i>
+        </div>
+        <h3 class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-1">Admin Access</h3>
+        <p class="text-xl font-black text-slate-900">Restricted</p>
+        <p class="text-xs text-slate-400 mt-2">Only for authorized staff</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 space-y-8">
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-2xl border shadow-sm p-6">
+            <h2 class="font-bold text-slate-900 mb-6">Quick Admin Actions</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="/inventory" class="p-4 border rounded-xl hover:bg-slate-50 transition flex flex-col items-center gap-2 text-center">
+                    <i class="fas fa-plus-circle text-emerald-500 text-xl"></i>
+                    <span class="text-xs font-bold">Add Product</span>
+                </a>
+                <a href="/admin/rooms" class="p-4 border rounded-xl hover:bg-slate-50 transition flex flex-col items-center gap-2 text-center">
+                    <i class="fas fa-bed text-blue-500 text-xl"></i>
+                    <span class="text-xs font-bold">Manage Rooms</span>
+                </a>
+                <a href="/admin/staff" class="p-4 border rounded-xl hover:bg-slate-50 transition flex flex-col items-center gap-2 text-center">
+                    <i class="fas fa-users-cog text-purple-500 text-xl"></i>
+                    <span class="text-xs font-bold">Staff Access</span>
+                </a>
+                <a href="/admin/printers" class="p-4 border rounded-xl hover:bg-slate-50 transition flex flex-col items-center gap-2 text-center">
+                    <i class="fas fa-print text-slate-500 text-xl"></i>
+                    <span class="text-xs font-bold">Printers</span>
+                </a>
+                <a href="/admin/receipts" class="p-4 border rounded-xl hover:bg-slate-50 transition flex flex-col items-center gap-2 text-center">
+                    <i class="fas fa-history text-amber-500 text-xl"></i>
+                    <span class="text-xs font-bold">Receipt Log</span>
+                </a>
+                <a href="/reports" class="p-4 border rounded-xl hover:bg-slate-50 transition flex flex-col items-center gap-2 text-center">
+                    <i class="fas fa-chart-pie text-red-500 text-xl"></i>
+                    <span class="text-xs font-bold">Analytics</span>
+                </a>
+                <a href="/reports/eod" class="p-4 border rounded-xl hover:bg-slate-50 transition flex flex-col items-center gap-2 text-center">
+                    <i class="fas fa-file-invoice-dollar text-emerald-600 text-xl"></i>
+                    <span class="text-xs font-bold">End of Day</span>
+                </a>
+                <div class="p-4 border rounded-xl bg-slate-50 opacity-50 flex flex-col items-center gap-2 text-center cursor-not-allowed">
+                    <i class="fas fa-cog text-slate-400 text-xl"></i>
+                    <span class="text-xs font-bold">Settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <!-- System Status -->
+        <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-xl">
+            <h2 class="font-bold mb-4 flex items-center gap-2">
+                <i class="fas fa-shield-alt text-emerald-500"></i>
+                Security Overview
+            </h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                    <span class="text-sm text-slate-400">Admin Mode</span>
+                    <span class="text-xs font-bold px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded-lg">ACTIVE</span>
+                </div>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+                    <span class="text-sm text-slate-400">Records Status</span>
+                    <span class="text-xs font-bold px-2 py-1 bg-blue-500/20 text-blue-400 rounded-lg">SECURE</span>
+                </div>
+            </div>
+            <div class="mt-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                <p class="text-xs text-emerald-400 font-medium">All changes made in the admin panel are logged for audit purposes.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

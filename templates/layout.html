@@ -57,16 +57,17 @@
         
         .backbtn {
             border-radius: 10rem;
-            border: 1px solid #b10000;
+            border: 1px solid #008080;
             font-size: 1.2rem;
             margin: 5px;
             padding-right: 1.3rem;
-            color: #00817a;
+            color: #008080;
             background-color: transparent;
+            transition: all 0.2s ease-in-out;
         }
 
         .backbtn:hover {
-            background-color: #b10000 !important;
+            background-color: #008080 !important;
             color: white !important;
         }
 
@@ -83,7 +84,7 @@
         #active {
             border: unset !important;
             color: #fff !important;
-            background: #017870 !important;
+            background: #008080 !important;
         }
 
         /* Responsive Fixes */
@@ -131,10 +132,16 @@
             background-color: #ff7700 !important;
         }
         .fa-dot-circle-o {
-            color: #00817a !important;
+            color: #008080 !important;
         }
         .card {
-            box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2), 0 13px 24px -11px rgba(255, 255, 255, 0.6) !important;
+            box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15), 0 13px 24px -11px rgba(255, 255, 255, 0.4) !important;
+            border-top: 3px solid #008080 !important;
+            border-radius: .4rem !important;
+        }
+        .card-header {
+            background-color: #f8f9fa !important;
+            border-bottom: 1px solid rgba(0,0,0,.08) !important;
         }
         .h5 {
             font-weight: bolder !important;
@@ -149,27 +156,74 @@
             border-radius: .4rem !important;
         }
 
+        /* Custom Theme Overrides */
+        .btn-kastompos-teal, .btn-teal {
+            background-color: #008080 !important;
+            color: #ffffff !important;
+            border: 1px solid #008080 !important;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-kastompos-teal:hover, .btn-teal:hover {
+            background-color: #006666 !important;
+            border-color: #006666 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 8px rgba(0, 128, 128, 0.2) !important;
+        }
+        .bg-teal {
+            background-color: #008080 !important;
+            color: #ffffff !important;
+        }
+        .text-teal {
+            color: #008080 !important;
+        }
+        .card-teal.card-outline, .card-outline.card-primary {
+            border-top: 3px solid #008080 !important;
+        }
+
         /* Premium presets for reports/forms */
         .btn-rgp {
-            border: 1px solid #1177BB;
-            color: #000;
+            border: 1px solid #008080 !important;
+            color: #008080 !important;
+            background-color: transparent !important;
+            transition: all 0.2s ease-in-out;
         }
         .btn-rgp:hover {
-            background-color: #569CD6;
+            background-color: #008080 !important;
+            color: #ffffff !important;
         }
         .btn-rgs {
-            border: 1px solid green;
-            color: green;
+            border: 1px solid #28a745 !important;
+            color: #28a745 !important;
+            background-color: transparent !important;
+            transition: all 0.2s ease-in-out;
         }
         .btn-rgs:hover {
-            background-color: #AEDAE4;
+            background-color: #28a745 !important;
+            color: #ffffff !important;
         }
         .btn-rgd {
-            border: 1px solid red;
-            color: red;
+            border: 1px solid #dc3545 !important;
+            color: #dc3545 !important;
+            background-color: transparent !important;
+            transition: all 0.2s ease-in-out;
         }
         .btn-rgd:hover {
-            background-color: #f8d7da;
+            background-color: #dc3545 !important;
+            color: #ffffff !important;
+        }
+
+        .tb_title {
+            background-color: #008080 !important;
+            color: white !important;
+            font-weight: bold;
+            transform: skewX(-10deg);
+            display: inline-block;
+            padding: 5px 20px;
+            margin-bottom: 15px;
+        }
+        .tb_title_inner {
+            transform: skewX(10deg);
+            display: inline-block;
         }
     </style>
     {% block styles %}{% endblock %}
