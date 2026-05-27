@@ -66,17 +66,12 @@ def build():
         '--hidden-import=uvicorn.protocols.websockets.auto',
         '--hidden-import=uvicorn.lifespan',
         '--hidden-import=uvicorn.lifespan.on',
-        # pywebview Windows backend
-        '--hidden-import=webview.platforms.winforms',
-        '--hidden-import=clr',
-        '--hidden-import=pythonnet',
         # SQLAlchemy
         '--hidden-import=sqlalchemy.dialects.sqlite',
         # FastAPI
         '--hidden-import=fastapi.routing',
         '--hidden-import=multipart',
         # Collect full packages
-        '--collect-all=webview',
         '--collect-all=uvicorn',
         '--collect-all=jinja2',
         '--collect-all=sqlalchemy',
