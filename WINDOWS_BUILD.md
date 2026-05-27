@@ -64,7 +64,7 @@ When the packaged application runs for the first time on a user's machine, it de
   - **Password**: `password123`
 
 ### Technical Details
-- **Launcher**: The app uses `pywebview` to wrap the FastAPI backend in a native web view, providing a premium desktop application experience.
+- **Launcher**: The app uses PyQt6 `QWebEngineView` to wrap the FastAPI backend in a native web view, providing a premium desktop application experience.
 - **Database Location**: When frozen inside the PyInstaller package, the database (`pos.db`) is automatically redirected to the user's roaming directory: `%APPDATA%/KastomPOS/pos.db`. This prevents data loss when updating or uninstalling the app.
 - **App Styling & Branding**: KastomPOS maintains clean teal-based branding (`#00817a`) throughout the setup, window wrappers, and app interface.
 

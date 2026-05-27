@@ -4,19 +4,6 @@
 
 {% block styles %}
 <style>
-    .tb_title {
-        background-color: #008080 !important;
-        color: white !important;
-        font-weight: bold;
-        transform: skewX(-10deg);
-        display: inline-block;
-        padding: 5px 20px;
-        margin-bottom: 15px;
-    }
-    .tb_title_inner {
-        transform: skewX(10deg);
-    }
-
     @media print {
         .no-print { display: none !important; }
         .card { border: none !important; box-shadow: none !important; }
@@ -29,9 +16,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <div class="tb_title">
-                    <span class="tb_title_inner">Customer Management</span>
-                </div>
+                <h1 class="m-0 text-dark">Customer Management</h1>
                 <p class="text-muted mb-0">Track and manage guest profiles, contact information, and billing loyalty status.</p>
             </div>
             <div class="col-sm-6">
