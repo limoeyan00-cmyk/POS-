@@ -9,7 +9,7 @@
 Antigravity Kit is a modular system consisting of:
 
 - **20 Specialist Agents** - Role-based AI personas
-- **36 Skills** - Domain-specific knowledge modules
+- **38 Skills** - Domain-specific knowledge modules
 - **11 Workflows** - Slash command procedures
 
 ---
@@ -57,7 +57,7 @@ Specialist AI personas for different domains.
 
 ---
 
-## 🧩 Skills (36)
+## 🧩 Skills (38)
 
 Modular knowledge domains that agents can load on-demand. based on task context.
 
@@ -88,6 +88,8 @@ Modular knowledge domains that agents can load on-demand. based on task context.
 | `imagegen-frontend-web`   | Image-only: premium website comps and landing frames.                 |
 | `imagegen-frontend-mobile`| Image-only: premium mobile UI screens and flows.                      |
 | `brandkit`                | Image-only: branding kits, logos, palettes, applications.             |
+| `impeccable`              | High-end interactive design iteration, visual hierarchy, anti-patterns. |
+| `design-motion-principles`| Premium motion and micro-interaction principles for UX.              |
 
 ### Backend & API
 
