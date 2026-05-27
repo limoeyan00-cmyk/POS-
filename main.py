@@ -6285,6 +6285,10 @@ async def get_perf_constant_view(request: Request, db: Session = Depends(get_db)
     html = ""
     if category == "collections":
         items = db.query(models.PerfConstant).filter(models.PerfConstant.category == "collections").all()
+        rows_list = []
+        for i in items:
+            rows_list.append(f'<tr><td>{i.name}</td><td><button class="btn btn-xs btn-rgd" onclick="delete_constant(\'collections\', {i.id})">Delete <i class="fa fa-trash"></i></button></td></tr>')
+        rows_html = "".join(rows_list) if items else '<tr><td colspan="2" class="text-center">No collections found</td></tr>'
         html = f"""
         <div class="row">
             <div class="col-md-5 pr-4">
@@ -6309,7 +6313,7 @@ async def get_perf_constant_view(request: Request, db: Session = Depends(get_db)
                         <table class="table table-sm table-bordered table-striped">
                             <thead><tr><th>Collection Name</th><th>Action</th></tr></thead>
                             <tbody>
-                                {"".join([f'<tr><td>{i.name}</td><td><button class="btn btn-xs btn-rgd" onclick="delete_constant(\'collections\', {i.id})">Delete <i class="fa fa-trash"></i></button></td></tr>' for i in items]) if items else '<tr><td colspan="2" class="text-center">No collections found</td></tr>'}
+                                {rows_html}
                             </tbody>
                         </table>
                     </div>
@@ -6321,6 +6325,10 @@ async def get_perf_constant_view(request: Request, db: Session = Depends(get_db)
         collections = db.query(models.PerfConstant).filter(models.PerfConstant.category == "collections").all()
         items = db.query(models.PerfConstant).filter(models.PerfConstant.category == "indexes").all()
         coll_options = "".join([f'<option value="{c.id}">{c.name}</option>' for c in collections])
+        rows_list = []
+        for i in items:
+            rows_list.append(f'<tr><td>{i.name}</td><td>{i.collection.name if i.collection else "N/A"}</td><td>{i.weight}%</td><td><button class="btn btn-xs btn-rgd" onclick="delete_constant(\'indexes\', {i.id})">Delete <i class="fa fa-trash"></i></button></td></tr>')
+        rows_html = "".join(rows_list) if items else '<tr><td colspan="4" class="text-center">No indexes found</td></tr>'
         html = f"""
         <div class="row">
             <div class="col-md-5 pr-4">
@@ -6356,7 +6364,7 @@ async def get_perf_constant_view(request: Request, db: Session = Depends(get_db)
                         <table class="table table-sm table-bordered table-striped">
                             <thead><tr><th>Index</th><th>Collection</th><th>Weight</th><th>Action</th></tr></thead>
                             <tbody>
-                                {"".join([f'<tr><td>{i.name}</td><td>{i.collection.name if i.collection else "N/A"}</td><td>{i.weight}%</td><td><button class="btn btn-xs btn-rgd" onclick="delete_constant(\'indexes\', {i.id})">Delete <i class="fa fa-trash"></i></button></td></tr>' for i in items]) if items else '<tr><td colspan="4" class="text-center">No indexes found</td></tr>'}
+                                {rows_html}
                             </tbody>
                         </table>
                     </div>
@@ -6368,6 +6376,10 @@ async def get_perf_constant_view(request: Request, db: Session = Depends(get_db)
         collections = db.query(models.PerfConstant).filter(models.PerfConstant.category == "collections").all()
         items = db.query(models.PerfConstant).filter(models.PerfConstant.category == "matrix").all()
         coll_options = "".join([f'<option value="{c.id}">{c.name}</option>' for c in collections])
+        rows_list = []
+        for i in items:
+            rows_list.append(f'<tr><td>{i.name}</td><td>{i.collection.name if i.collection else "N/A"}</td><td>{i.score}</td><td><button class="btn btn-xs btn-rgd" onclick="delete_constant(\'matrix\', {i.id})">Delete <i class="fa fa-trash"></i></button></td></tr>')
+        rows_html = "".join(rows_list) if items else '<tr><td colspan="4" class="text-center">No matrix entries found</td></tr>'
         html = f"""
         <div class="row">
             <div class="col-md-5 pr-4">
@@ -6403,7 +6415,7 @@ async def get_perf_constant_view(request: Request, db: Session = Depends(get_db)
                         <table class="table table-sm table-bordered table-striped">
                             <thead><tr><th>Rating</th><th>Collection</th><th>Score</th><th>Action</th></tr></thead>
                             <tbody>
-                                {"".join([f'<tr><td>{i.name}</td><td>{i.collection.name if i.collection else "N/A"}</td><td>{i.score}</td><td><button class="btn btn-xs btn-rgd" onclick="delete_constant(\'matrix\', {i.id})">Delete <i class="fa fa-trash"></i></button></td></tr>' for i in items]) if items else '<tr><td colspan="4" class="text-center">No matrix entries found</td></tr>'}
+                                {rows_html}
                             </tbody>
                         </table>
                     </div>
